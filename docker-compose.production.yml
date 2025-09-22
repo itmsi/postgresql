@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: shared-prod-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      # Format: host_port:container_port
+      # MySQL default port adalah 3306
+      - "9540:3306"
+    volumes:
+      - mysql_prod_data:/var/lib/mysql
+      - ./mysql/conf.d:/etc/mysql/conf.d
+    command: --default-authentication-plugin=mysql_native_password
+    networks:
+      - prod_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  postgres:
+    image: postgres:15
+    container_name: shared-prod-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      # Mengizinkan koneksi dari luar
+      POSTGRES_HOST_AUTH_METHOD: md5
+    ports:
+      # Format: host_port:container_port
+      # PostgreSQL default port adalah 5432
+      - "9541:5432"
+    volumes:
+      - postgres_prod_data:/var/lib/postgresql/data
+      - ./postgres/init:/docker-entrypoint-initdb.d
+    networks:
+      - prod_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_ready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Optional: Adminer untuk web-based database management
+  adminer:
+    image: adminer:latest
+    container_name: shared-prod-adminer
+    restart: unless-stopped
+    ports:
+      - "9542:8080"
+    networks:
+      - prod_network
+    depends_on:
+      - mysql
+      - postgres
+
+volumes:
+  mysql_prod_data:
+    driver: local
+  postgres_prod_data:
+    driver: local
+
+networks:
+  prod_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
