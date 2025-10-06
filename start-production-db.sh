@@ -28,6 +28,7 @@ sleep 10
 
 # Check MySQL
 echo "🔍 Checking MySQL connection..."
+source production.env
 docker exec shared-prod-mysql mysqladmin ping -h localhost -u root -p${MYSQL_ROOT_PASSWORD} || echo "❌ MySQL belum siap"
 
 # Check PostgreSQL
