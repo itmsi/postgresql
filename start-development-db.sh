@@ -20,7 +20,7 @@ mkdir -p postgres/init
 
 # Start containers
 echo "📦 Starting Docker containers..."
-docker-compose --env-file development.env -f docker-compose.development.yml up -d
+docker compose --env-file development.env -f docker-compose.development.yml up -d
 
 # Wait for databases to be ready
 echo "⏳ Menunggu database siap..."
@@ -42,14 +42,14 @@ echo ""
 echo "📊 Koneksi Database Development:"
 echo "MySQL:"
 echo "  Host: localhost"
-echo "  Port: 3307"
+echo "  Port: 9552"
 echo "  Database: shared_dev_db"
 echo "  User: devuser"
 echo "  Password: DevPassword123!"
 echo ""
 echo "PostgreSQL:"
 echo "  Host: localhost"
-echo "  Port: 5433"
+echo "  Port: 9551"
 echo "  Database: shared_dev_pgdb"
 echo "  User: devuser"
 echo "  Password: DevPassword123!"
@@ -57,6 +57,6 @@ echo ""
 echo "🌐 Adminer (Web DB Manager):"
 echo "  URL: http://localhost:8081"
 echo ""
-echo "📝 Untuk melihat logs: docker-compose -f docker-compose.development.yml logs -f"
-echo "🛑 Untuk stop: docker-compose -f docker-compose.development.yml down"
+echo "📝 Untuk melihat logs: docker compose -f docker-compose.development.yml logs -f"
+echo "🛑 Untuk stop: docker compose -f docker-compose.development.yml down"
 

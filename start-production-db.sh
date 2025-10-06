@@ -20,7 +20,7 @@ mkdir -p postgres/init
 
 # Start containers
 echo "📦 Starting Docker containers..."
-docker-compose --env-file production.env -f docker-compose.production.yml up -d
+docker compose --env-file production.env -f docker-compose.production.yml up -d
 
 # Wait for databases to be ready
 echo "⏳ Menunggu database siap..."
@@ -55,5 +55,5 @@ echo ""
 echo "🌐 Adminer (Web DB Manager):"
 echo "  URL: http://localhost:9542"
 echo ""
-echo "📝 Untuk melihat logs: docker-compose -f docker-compose.production.yml logs -f"
-echo "🛑 Untuk stop: docker-compose -f docker-compose.production.yml down"
+echo "📝 Untuk melihat logs: docker compose -f docker-compose.production.yml logs -f"
+echo "🛑 Untuk stop: docker compose -f docker-compose.production.yml down"
