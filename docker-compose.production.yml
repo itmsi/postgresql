@@ -40,6 +40,16 @@ services:
     volumes:
       - postgres_prod_data:/var/lib/postgresql/data
       - ./postgres/init:/docker-entrypoint-initdb.d
+    command:
+      - postgres
+      - -c
+      - wal_level=logical
+      - -c
+      - max_wal_senders=10
+      - -c
+      - max_replication_slots=10
+      - -c
+      - max_logical_replication_workers=10
     networks:
       - prod_network
     healthcheck:
