@@ -14,6 +14,13 @@ if [ ! -f "production.env" ]; then
     exit 1
 fi
 
+# Buat symlink .env ke production.env jika belum ada
+# Docker Compose otomatis membaca file .env untuk substitusi variabel
+if [ ! -f ".env" ]; then
+    echo "📝 Membuat symlink .env ke production.env..."
+    ln -s production.env .env
+fi
+
 # Buat direktori yang diperlukan
 mkdir -p mysql/conf.d
 mkdir -p postgres/init
