@@ -3,6 +3,8 @@ services:
     image: mysql:8.0
     container_name: shared-prod-mysql
     restart: unless-stopped
+    env_file:
+      - production.env
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -27,6 +29,8 @@ services:
     image: postgres:15
     container_name: shared-prod-postgres
     restart: unless-stopped
+    env_file:
+      - production.env
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -53,7 +57,7 @@ services:
     networks:
       - infra_net
     healthcheck:
-      test: ["CMD-SHELL", "pg_ready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -63,6 +67,8 @@ services:
     image: adminer:latest
     container_name: shared-prod-adminer
     restart: unless-stopped
+    env_file:
+      - production.env
     ports:
       - "9542:8080"
     networks:
