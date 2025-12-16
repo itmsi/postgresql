@@ -4,7 +4,7 @@ services:
     container_name: shared-prod-mysql
     restart: unless-stopped
     env_file:
-      - production.env
+      - .env
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -30,7 +30,7 @@ services:
     container_name: shared-prod-postgres
     restart: unless-stopped
     env_file:
-      - production.env
+      - .env
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -68,7 +68,7 @@ services:
     container_name: shared-prod-adminer
     restart: unless-stopped
     env_file:
-      - production.env
+      - .env
     ports:
       - "9542:8080"
     networks:
@@ -87,3 +87,4 @@ networks:
   infra_net:
     external: true
     name: infra_net
+

@@ -7,7 +7,7 @@ echo "🛑 Stopping Production Databases..."
 
 # Stop containers
 echo "📦 Stopping Docker containers..."
-docker compose --env-file production.env -f docker-compose.production.yml down --remove-orphans
+docker compose down --remove-orphans
 
 # Hapus container yang mungkin masih ada (jika ada konflik)
 echo "🧹 Cleaning up any remaining containers..."
@@ -17,5 +17,5 @@ echo "✅ Database production sudah dihentikan!"
 echo ""
 echo "💡 Tips:"
 echo "  - Data akan tetap tersimpan di Docker volumes"
-echo "  - Untuk menghapus data juga, gunakan: docker compose -f docker-compose.production.yml down -v"
+echo "  - Untuk menghapus data juga, gunakan: docker compose down -v"
 echo "  - Untuk melihat status: docker ps --filter 'name=shared-prod'"

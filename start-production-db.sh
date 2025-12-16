@@ -8,17 +8,16 @@ set -e
 echo "🚀 Starting Production Databases..."
 
 # Pastikan file environment ada
-if [ ! -f "production.env" ]; then
-    echo "❌ File production.env tidak ditemukan!"
-    echo "Silakan copy dari production.env.example dan sesuaikan konfigurasi"
-    exit 1
-fi
-
-# Buat symlink .env ke production.env jika belum ada
-# Docker Compose otomatis membaca file .env untuk substitusi variabel
 if [ ! -f ".env" ]; then
-    echo "📝 Membuat symlink .env ke production.env..."
-    ln -s production.env .env
+    echo "❌ File .env tidak ditemukan!"
+    if [ -f ".env.example" ]; then
+        echo "📝 File .env.example ditemukan. Copy ke .env dan sesuaikan konfigurasi:"
+        echo "   cp .env.example .env"
+        echo "   nano .env"
+    else
+        echo "Silakan buat file .env dengan konfigurasi database"
+    fi
+    exit 1
 fi
 
 # Buat direktori yang diperlukan
@@ -27,7 +26,7 @@ mkdir -p postgres/init
 
 # Start containers
 echo "📦 Starting Docker containers..."
-docker compose --env-file production.env -f docker-compose.production.yml up -d
+docker compose up -d
 
 # Wait for databases to be ready
 echo "⏳ Menunggu database siap..."
@@ -35,12 +34,12 @@ sleep 10
 
 # Check MySQL
 echo "🔍 Checking MySQL connection..."
-source production.env
+source .env
 docker exec shared-prod-mysql mysqladmin ping -h localhost -u root -p${MYSQL_ROOT_PASSWORD} || echo "❌ MySQL belum siap"
 
 # Check PostgreSQL
 echo "🔍 Checking PostgreSQL connection..."
-docker exec shared-prod-postgres pg_isready -U msiserver -d shared_pgdb || echo "❌ PostgreSQL belum siap"
+docker exec shared-prod-postgres pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB} || echo "❌ PostgreSQL belum siap"
 
 echo "✅ Database production sudah berjalan!"
 echo ""
@@ -48,19 +47,19 @@ echo "📊 Koneksi Database:"
 echo "MySQL:"
 echo "  Host: localhost"
 echo "  Port: 9540"
-echo "  Database: shared_db"
-echo "  User: msiserver"
-echo "  Password: (lihat di production.env)"
+echo "  Database: ${MYSQL_DATABASE}"
+echo "  User: ${MYSQL_USER}"
+echo "  Password: (lihat di .env)"
 echo ""
 echo "PostgreSQL:"
 echo "  Host: localhost"
 echo "  Port: 9541"
-echo "  Database: shared_pgdb"
-echo "  User: msiserver"
-echo "  Password: (lihat di production.env)"
+echo "  Database: ${POSTGRES_DB}"
+echo "  User: ${POSTGRES_USER}"
+echo "  Password: (lihat di .env)"
 echo ""
 echo "🌐 Adminer (Web DB Manager):"
 echo "  URL: http://localhost:9542"
 echo ""
-echo "📝 Untuk melihat logs: docker compose -f docker-compose.production.yml logs -f"
-echo "🛑 Untuk stop: docker compose -f docker-compose.production.yml down"
+echo "📝 Untuk melihat logs: docker compose logs -f"
+echo "🛑 Untuk stop: docker compose down"
