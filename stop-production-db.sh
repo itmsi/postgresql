@@ -7,7 +7,11 @@ echo "🛑 Stopping Production Databases..."
 
 # Stop containers
 echo "📦 Stopping Docker containers..."
-docker compose --env-file production.env -f docker-compose.production.yml down
+docker compose --env-file production.env -f docker-compose.production.yml down --remove-orphans
+
+# Hapus container yang mungkin masih ada (jika ada konflik)
+echo "🧹 Cleaning up any remaining containers..."
+docker rm -f shared-prod-mysql shared-prod-postgres shared-prod-adminer 2>/dev/null || true
 
 echo "✅ Database production sudah dihentikan!"
 echo ""
