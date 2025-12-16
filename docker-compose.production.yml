@@ -17,7 +17,7 @@ services:
       - ./mysql/conf.d:/etc/mysql/conf.d
     command: --default-authentication-plugin=mysql_native_password
     networks:
-      - traefik-network
+      - infra_net
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 20s
@@ -51,7 +51,7 @@ services:
       - -c
       - max_logical_replication_workers=10
     networks:
-      - traefik-network
+      - infra_net
     healthcheck:
       test: ["CMD-SHELL", "pg_ready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 30s
@@ -66,7 +66,7 @@ services:
     ports:
       - "9542:8080"
     networks:
-      - traefik-network
+      - infra_net
     depends_on:
       - mysql
       - postgres
@@ -78,6 +78,6 @@ volumes:
     driver: local
 
 networks:
-  traefik-network:
+  infra_net:
     external: true
-    name: traefik-network
+    name: infra_net
