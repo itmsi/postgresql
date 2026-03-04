@@ -21,7 +21,7 @@ services:
     networks:
       - infra_net
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
       timeout: 20s
       retries: 10
 
@@ -47,6 +47,12 @@ services:
     command:
       - postgres
       - -c
+      - shared_preload_libraries=pg_stat_statements
+      - -c
+      - pg_stat_statements.track=all
+      - -c
+      - pg_stat_statements.max=10000
+      - -c
       - wal_level=logical
       - -c
       - max_wal_senders=10
@@ -57,7 +63,7 @@ services:
     networks:
       - infra_net
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -87,4 +93,3 @@ networks:
   infra_net:
     external: true
     name: infra_net
-
