@@ -15,14 +15,14 @@ Sesuaikan file `production.env` dengan kredensial yang aman:
 
 ```bash
 # MySQL Configuration
-MYSQL_ROOT_PASSWORD=password_aman_anda
+MYSQL_ROOT_PASSWORD=GANTI_DENGAN_PASSWORD_AMAN
 MYSQL_DATABASE=shared_db
 MYSQL_USER=msiserver
-MYSQL_PASSWORD=password_aman_anda
+MYSQL_PASSWORD=GANTI_DENGAN_PASSWORD_AMAN
 
 # PostgreSQL Configuration
 POSTGRES_USER=msiserver
-POSTGRES_PASSWORD=password_aman_anda
+POSTGRES_PASSWORD=GANTI_DENGAN_PASSWORD_AMAN
 POSTGRES_DB=shared_pgdb
 ```
 

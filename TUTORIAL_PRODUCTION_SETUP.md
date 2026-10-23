@@ -27,14 +27,14 @@ Edit file `production.env` sesuai kebutuhan:
 # Ganti password ini dengan password yang lebih aman untuk production
 
 # MySQL Configuration
-MYSQL_ROOT_PASSWORD=Rubysa179596!
+MYSQL_ROOT_PASSWORD=GANTI_DENGAN_PASSWORD_AMAN
 MYSQL_DATABASE=shared_db
 MYSQL_USER=msiserver
-MYSQL_PASSWORD=Rubysa179596!
+MYSQL_PASSWORD=GANTI_DENGAN_PASSWORD_AMAN
 
 # PostgreSQL Configuration
 POSTGRES_USER=msiserver
-POSTGRES_PASSWORD=Rubysa179596!
+POSTGRES_PASSWORD=GANTI_DENGAN_PASSWORD_AMAN
 POSTGRES_DB=shared_pgdb
 
 # Network Configuration
@@ -57,7 +57,7 @@ Setelah script selesai, verifikasi bahwa semua container berjalan:
 docker ps --filter "name=shared-prod"
 
 # Test koneksi MySQL
-docker exec shared-prod-mysql mysqladmin ping -h localhost -u root -pRubysa179596!
+docker exec shared-prod-mysql mysqladmin ping -h localhost -u root -pGANTI_DENGAN_PASSWORD_AMAN
 
 # Test koneksi PostgreSQL
 docker exec shared-prod-postgres pg_isready -U msiserver -d shared_pgdb
@@ -111,7 +111,7 @@ docker-compose -f docker-compose.production.yml down
 ### Backup Database
 ```bash
 # Backup MySQL
-docker exec shared-prod-mysql mysqldump -u root -pRubysa179596! shared_db > mysql_backup.sql
+docker exec shared-prod-mysql mysqldump -u root -pGANTI_DENGAN_PASSWORD_AMAN shared_db > mysql_backup.sql
 
 # Backup PostgreSQL
 docker exec shared-prod-postgres pg_dump -U msiserver shared_pgdb > postgres_backup.sql
@@ -120,7 +120,7 @@ docker exec shared-prod-postgres pg_dump -U msiserver shared_pgdb > postgres_bac
 ### Restore Database
 ```bash
 # Restore MySQL
-docker exec -i shared-prod-mysql mysql -u root -pRubysa179596! shared_db < mysql_backup.sql
+docker exec -i shared-prod-mysql mysql -u root -pGANTI_DENGAN_PASSWORD_AMAN shared_db < mysql_backup.sql
 
 # Restore PostgreSQL
 docker exec -i shared-prod-postgres psql -U msiserver -d shared_pgdb < postgres_backup.sql
